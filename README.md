@@ -1,4 +1,4 @@
-# AndroidPOS
+# SpringMVC
 
 ## 개발환경
 * 빌드 도구 : maven
@@ -18,7 +18,7 @@
 
 3. 각종 경로 오류 전반   
    * 인텔리제이 imi 설정파일과 스프링 xml 파일을 점검해서 필요한 각각의 경로를 점검한다   
-     (AndroidPOS.imi / root-context.xml / applicationContext.xml)    
+     (SpringMVC.imi / root-context.xml / applicationContext.xml)    
    * 점검해도 문제가 지속된다면 인텔리제이의 Artifacts와 Libraries를 확인하고 필요한 라이브러리가 제대로 들어가 있는지 확인한다. 확인하거나 재설정을 했다면 maven 탭에서 소스/문서를 다시 다운로드하고 라이프사이클에서 clean 및 install을 다시 시도한다 
 
 ## 기존 STS(이클립스)와의 프로젝트 구조 차이점 (현재는 STS 구조 사용중)

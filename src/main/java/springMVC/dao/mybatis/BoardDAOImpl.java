@@ -54,7 +54,7 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public List<Map<String, Object>> selectDataListPage(baseVO adposVO, Criteria cri) throws SQLException {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("AndroidPosVO", adposVO);
+		paramMap.put("baseVO", adposVO);
 		paramMap.put("Criteria", cri);
 		List<Map<String, Object>> DataListPageSearch = springMVCSession.selectList("BoardMapper.selectDataListPage",
 				paramMap);
