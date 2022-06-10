@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- mysql -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://주소:포트/DB이름?autoReconnect=true&amp;useSSL=false&amp;noAccessToProcedureBodies=true&amp;zeroDateTimeBehavior=convertToNull&amp;useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=UTC" />
+		<property name="username" value="계정" />
+		<property name="password" value="비밀번호" />
+		<property name="initialSize" value="0"/>
+		<property name="minIdle" value="0"/> 
+		<property name="maxIdle" value="10"/>
+	</bean>
+
+	<!-- mssql -->
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName"
+			value="com.microsoft.sqlserver.jdbc.SQLServerDriver"></property>
+		<property name="url"
+			value="jdbc:sqlserver://주소:포트;databaseName=DB이름;sendStringParametersAsUnicode=true"></property>
+		<property name="username" value="계정이름"></property>
+		<property name="password" value="비밀번호"></property>
+		
+		<!-- 커넥션풀 설정 -->
+		<!-- 연결 풀이 최초 생성될 때 같이 이 숫자만큼 데이터베에스 연결을 미리 생성함. 기본값은 0 -->
+		<property name="initialSize" value="0" />
+		<!-- 동시에 사용할 수 있는 최대 연결 갯수, 기본값은 8 -->
+		<!-- <property name="maxTotal" value="8" /> -->
+		<!-- 풀에서 사용되지 않은 상태로 존재할 수 있는 최대 연결의 숫자. 기본값은 8 -->
+		<property name="maxIdle" value="8" />
+		<!-- 풀에서 사용되지 않은 상태로 존재할 수 있는 최소 연결의 숫자. 기본값은 0 -->
+		<property name="minIdle" value="0" />
+		<!-- 풀에 사용 가능할 연결이 없을 때 대기하는 최대 시간을 밀리초 단위로 나타냄, 기본값은 -1 -->
+		<!-- <property name="maxWaitMillis" value="-1" /> -->
+	</bean>
+
+	<bean id="springMVCSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="configLocation"
+			value="classpath:/mybatis-config.xml"></property>
+	</bean>
+	<bean id="springMVCSession"
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="springMVCSessionFactory" />
+	</bean>
+
+	<!-- 파일 업로드 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver"></bean>	
+
+	<!-- 파일업로드 디렉토리 설정 -->
+	<!-- <bean id="uploadPath" class="java.lang.String">
+		<constructor-arg value="image/" />
+	</bean> -->
+
+</beans>

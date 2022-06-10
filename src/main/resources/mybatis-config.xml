@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "HTTP://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    
+    <!-- 설정 -->
+    <settings>
+    	<!-- DB응답을 얼마나 오래 기다릴지 판단하는 타임아웃 (초단위) -->
+    	<setting name="defaultStatementTimeout" value="30"/>
+    	<!-- 스네이크/카멜케이스 자동변환 매핑하는 옵션 -->
+    	<!-- <setting name="mapUnderscoreToCamelCase" value="true"/> -->
+    </settings>
+    
+
+    <!-- VO 매핑 -->
+    <!-- VO 타입은 VO파일 이름 끝까지 기재할 것 -->
+    <typeAliases>
+        <typeAlias type="springMVC.vo.baseVO" alias="baseVO" />
+        <typeAlias type="springMVC.vo.MemberVO" alias="MemberVO" />
+        <typeAlias type="springMVC.vo.ImageVO" alias="ImageVO" />
+    </typeAliases>
+
+    <!-- myBatis mapper.xml 매핑 -->
+    <mappers>
+        <mapper resource="mapper/baseMapper.xml"/>
+        <mapper resource="mapper/BoardMapper.xml"/>
+        <mapper resource="mapper/MemberMapper.xml"/>
+        <mapper resource="mapper/ImageMapper.xml"/>
+    </mappers>
+
+</configuration>

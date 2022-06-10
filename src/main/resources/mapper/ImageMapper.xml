@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ImageMapper">
+
+	<!-- 이미지 등록 -->
+	<insert id="insertImage" parameterType="springMVC.vo.ImageVO">
+		INSERT INTO dbo.tb_Image(memberSeq, fileName, uploadPath, uuid)
+		     VALUES (#{memberSeq}, #{fileName}, #{uploadPath}, #{uuid})
+	</insert>
+	
+	<!-- 게시글의 이미지만 삭제 -->
+	<delete id="deleteImageOnly" parameterType="springMVC.vo.MemberVO">
+		DELETE FROM dbo.tb_Image
+	     WHERE memberSeq = #{memberSeq}
+	</delete>
+	
+	<!-- 게시글 상세의 이미지 조회 -->
+	<select id="getImage" resultType="springMVC.vo.ImageVO" parameterType="springMVC.vo.ImageVO">
+        SELECT fileName,
+        	   uploadPath,
+      		   uuid
+          FROM dbo.tb_Image
+         WHERE memberSeq = #{memberSeq}
+	</select>
+	
+	<!-- 이미지 등록 (미사용, 테스트) -->
+	<insert id="insertImageWithMamber" parameterType="springMVC.vo.ImageVO">
+	  INSERT INTO dbo.tb_Member (memberName, memberGrade, memberUseYn, regDate)
+           VALUES (#{memberName}, #{memberGrade}, #{memberUseYn}, #{regDate})
+		  DECLARE @id INT
+              SET @id = @@IDENTITY('dbo.tb_Member')
+      INSERT INTO dbo.tb_Image(memberSeq, fileName, uploadPath, uuid)
+           VALUES (@id, #{fileName}, #{uploadPath}, #{uuid})
+	</insert>
+	
+
+</mapper>

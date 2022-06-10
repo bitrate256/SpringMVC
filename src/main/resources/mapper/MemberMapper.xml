@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemberMapper">
+
+	<!-- 검색 있는 게시글 목록 조회 -->
+	<select id="selectMemberListPage"
+		resultType="java.util.HashMap"
+		parameterType="springMVC.vo.MemberVO">
+        SELECT memberSeq,
+        	   memberName,
+      		   memberGrade,
+      		   memberUseYn,
+      		   regDate
+          FROM dbo.tb_Member
+         WHERE 1=1
+         <include refid="search"></include>
+         <include refid="paging"></include>
+	</select>
+	<!-- 토탈카운트 -->
+	<select id="getTotalCountMember" resultType="int">
+	SELECT count(memberSeq)
+	  FROM dbo.tb_Member
+	</select>
+	
+	<!-- 검색 있는 게시글 목록 조회 (EXCEL) -->
+	<select id="selectDataListPageExcel"
+		resultType="springMVC.vo.MemberVO"
+		parameterType="springMVC.vo.MemberVO">
+        SELECT memberSeq,
+        	   memberName,
+      		   memberGrade,
+      		   memberUseYn,
+      		   regDate
+          FROM dbo.tb_Member
+         WHERE 1=1
+         <include refid="search"></include>
+         <include refid="paging"></include>
+	</select>
+	
+	<!-- 공통페이징(dbmsMode 파라미터로 선택) -->
+	<sql id="paging">
+		<choose>
+			<when test="MemberVO.dbmsMode == 'mysql'">
+				ORDER BY memberSeq DESC
+				LIMIT #{Criteria.pageStart}, #{Criteria.perPageNum}
+			</when>
+			<when test="MemberVO.dbmsMode == 'mssql'">
+				ORDER BY memberSeq DESC
+        		OFFSET ((#{Criteria.page} - 1) * #{Criteria.perPageNum}) ROWS
+    			FETCH NEXT #{Criteria.perPageNum} ROWS ONLY
+			</when>
+		</choose>
+	</sql>
+	
+	<!-- mysql 페이징 -->
+	<sql id="mysqlPaging">
+		ORDER BY memberSeq DESC
+		LIMIT #{Criteria.pageStart}, #{Criteria.perPageNum}
+	</sql>
+	
+	<!-- mssql 페이징 -->
+	<sql id="mssqlPaging">
+	ORDER BY memberSeq DESC
+        OFFSET ((#{Criteria.page} - 1) * #{Criteria.perPageNum}) ROWS
+    FETCH NEXT #{Criteria.perPageNum} ROWS ONLY
+    </sql>
+    
+	<sql id="search">
+      <choose>
+         <!-- ########################################### keword 있음 ########################################### -->
+         <when test="MemberVO.keyword != null">
+            AND memberName like CONCAT('%', #{MemberVO.keyword}, '%')
+         </when>
+      </choose>
+   </sql>
+	
+	<!-- /게시글 목록 조회 -->
+
+	<!-- 게시글 등록 -->
+	<insert id="regMember" parameterType="springMVC.vo.MemberVO">
+		<selectKey keyProperty="memberSeq" resultType="int" order="AFTER">
+        	SELECT @@IDENTITY AS memberSeq
+    	</selectKey>
+        INSERT INTO dbo.tb_Member (memberName, memberGrade, memberUseYn, regDate)
+        VALUES (#{memberName}, #{memberGrade}, #{memberUseYn}, #{regDate})
+	</insert>
+	
+	<select id="getMemberSeq" resultType="springMVC.vo.MemberVO"
+		parameterType="springMVC.vo.MemberVO">
+        SELECT @@IDENTITY AS memberSeq
+    </select>
+    
+    <insert id="insertImage">
+    	INSERT INTO dbo.tb_Image (memberSeq, fileName, uploadPath, uuid)
+    	VALUES (#{memberSeq}, #{fileName}, #{uploadPath}, #{uuid})
+    </insert>
+	
+	<select id="memberDetail" resultType="springMVC.vo.MemberVO"
+		parameterType="springMVC.vo.MemberVO">
+		SELECT *
+		  FROM dbo.tb_Member
+		 WHERE memberSeq = #{memberSeq}
+	</select>
+	
+	<update id="modifyMember" parameterType="springMVC.vo.MemberVO">
+		UPDATE dbo.tb_Member
+		SET 
+		   memberName = #{memberName}
+		   , memberGrade = #{memberGrade}
+		   , memberUseYn = #{memberUseYn}
+		WHERE memberSeq = #{memberSeq}
+	</update>
+	
+	<!-- 게시글 삭제 (게시글+이미지 함께 삭제) -->
+	<delete id="deleteMember" parameterType="springMVC.vo.MemberVO">
+		DELETE FROM dbo.tb_Member
+		      WHERE memberSeq = #{memberSeq}
+	</delete>
+
+</mapper>
