@@ -117,28 +117,16 @@ $(document).ready(function() {
 	
 	// 이미지 삭제 버튼
 	$("#uploadResult").on("click", ".imgDeleteBtn", function(e){
-		$("#result_card").empty();
-		const div = document.getElementById('result_card');
-		div.remove();
+		// $("#result_card").empty();
+		document.getElementById("preview").remove();
+		document.getElementById("result_card").remove();
+		// document.getElementById("preview").remove();
+		// let str = "";
+		// str += "<img id='preview' >";
+		// uploadResult.append(str);
+		// document.getElementById("preview").setAttribute("src", "");
 	    readURL(this);
 	});
-
-		// 선택한 파일이 개발자가 허용하는 파일이 아닐 시에 경고창과 함께 <input> change 이벤트 메서드에서 벗어나도록 구현
-		// 조건 : jpg/png 파일만 허용, 파일 크기는 1MB
-		let regex = new RegExp("(.*?)\.(jpg|png)$");
-		let maxSize = 1048576; //1MB
-		function fileCheck(fileName, fileSize) {
-			if (fileSize >= maxSize) {
-				alert("파일 사이즈 초과");
-				return false;
-			}
-			if (!regex.test(fileName)) {
-				alert("해당 종류의 파일은 업로드할 수 없습니다.");
-				return false;
-			}
-			console.log("업로드 파일검증 통과");
-			return true;
-		}
 });
 
 $(document).on('click', '#btn_cancel', function() { // 이전 페이지 이동
@@ -156,52 +144,67 @@ $(document).on('click', '#btn_modify', function() {
 	frmSubmit();
 });
 
+function fileCheck(fileName, fileSize) {
+	// 선택한 파일이 개발자가 허용하는 파일이 아닐 시에 경고창과 함께 <input> change 이벤트 메서드에서 벗어나도록 구현
+	// 조건 : jpg/png 파일만 허용, 파일 크기는 1MB
+	let regex = new RegExp("(.*?)\.(jpg|png)$");
+	let maxSize = 5242880; // 5MB
+
+	if (fileSize >= maxSize) {
+		alert("파일 사이즈 초과");
+		return false;
+	}
+	if (!regex.test(fileName)) {
+		alert("해당 종류의 파일은 업로드할 수 없습니다.");
+		return false;
+	}
+	console.log("업로드 파일검증 통과");
+	return true;
+}
+
 // frmSubmit()을 글 작성 폼과 동일한 양식으로
 function frmSubmit() {
-	
-	// uploadFile 가 있으면 이미지 추가
-	if($('#uploadFile').length > 0){
-		var fileInput = $('input[name="uploadFile"]');
-		
-		console.log("fileInput : " + fileInput);
-		
-		// FileList 객체 접근
-		var fileList = fileInput[0].files;
-		// FileList의 요소로 있는 File 객체에 접근
-		var fileObj = fileList[0];
-		
-		// 선택한 파일이 개발자가 허용하는 파일이 아닐 시에 경고창과 함께 <input> change 이벤트 메서드에서 벗어나도록 구현
-		// 조건 : jpg/png 파일만 허용, 파일 크기는 1MB
-		var regex = new RegExp("(.*?)\.(jpg|png)$");
-		var maxSize = 1048576; //1MB
-		
-		function fileCheck(fileName, fileSize){
-			if(fileSize >= maxSize){
-				alert("파일 사이즈 초과");
-				return false;
-			}
-			if(!regex.test(fileName)){
-				alert("해당 종류의 파일은 업로드할 수 없습니다.");
-				return false;
-			}
-			return true;
-		}
-	} else {
-		// result_card 없음
-		console.log("uploadFile 없음");
-	}
+
 	// FormData 객체를 인스턴스화 하여 변수에 저장
 	// FormData 객체에 데이터를 추가하려면
 	// FormData.append(key, value)
-	var formData = new FormData();
-	
-	if (document.getElementById("result_card") === null) {
-		console.log("result_card 없음");
-		console.log("이미지 지우는 상태파라미터 추가");
-		var imageEditYn = true;
+	let formData = new FormData();
+
+	console.log("폼데이터 선언");
+	var imageEditYn = false;
+	var uploadStart = false;
+	// 게시글 수정시 이미지 수정/삭제/변동없음 판단
+	if (document.getElementById("result_card") === null && document.getElementById("exist_image") === null
+			&& document.getElementById("preview").getAttribute("src") === null ) {
+		console.log("result_card 없음 / exist_image 없음");
+		console.log("게시글에 이미지 없음 / 이미지 삭제 시도 하지 않고 글만 수정");
+		imageEditYn = false;
 		console.log("imageEditYn : " + imageEditYn);
-	} else {
-		var imageEditYn = false;
+	} else if ( document.getElementById("result_card") === null && document.getElementById("exist_image") !== null
+			&& document.getElementById("preview") !== null ) {
+		console.log("result_card 없음 / exist_image 있음 / preview 있음");
+		console.log("게시글에 이미지 있음 / 이미지 수정 업로드");
+		imageEditYn = true;
+		uploadStart = true;
+		console.log("imageEditYn : " + imageEditYn);
+	} else if (document.getElementById("result_card") === null && document.getElementById("exist_image") === null
+			&& document.getElementById("preview") !== null ) {
+		console.log("result_card 없음 / exist_image 없음 / preview 있음");
+		console.log("게시글에 이미지 없음 / 이미지 신규 업로드");
+		imageEditYn = true;
+		uploadStart = true;
+		console.log("imageEditYn : " + imageEditYn);
+	}  else if (document.getElementById("result_card") === null && document.getElementById("exist_image") !== null
+			&& document.getElementById("preview") === null ) {
+		console.log("result_card 없음 / exist_image 있음 / preview 없음");
+		console.log("현재 이미지 삭제");
+		imageEditYn = true;
+		console.log("imageEditYn : " + imageEditYn);
+	} else if (document.getElementById("result_card") !== null && document.getElementById("exist_image") !== null
+			&& document.getElementById("preview") === null ) {
+		console.log("result_card 있음 / exist_image 있음");
+		console.log("게시글에 이미지 있음 / 이미지 삭제하지 않고 글만 수정");
+		imageEditYn = false;
 		console.log("imageEditYn : " + imageEditYn);
 	}
 	
@@ -212,45 +215,51 @@ function frmSubmit() {
 	
 	const existUploadPath = document.getElementById("existUploadPath").value;
 	const existUuid = document.getElementById("existUuid").value;
-	const existFileName = document.getElementById("existFileName").value;
-	const existThumbNailFileName = document.getElementById("existThumbNailFileName").value;
 	
 	formData.append("memberSeq", memberSeq);
 	formData.append("memberName", memberName);
 	formData.append("memberGrade", memberGrade);
 	formData.append("memberUseYn", memberUseYn);
 	formData.append("imageEditYn", imageEditYn);
+	formData.append("uploadStart", uploadStart);
 	
 	formData.append("existUploadPath", existUploadPath);
 	formData.append("existUuid", existUuid);
-	formData.append("existFileName", existFileName);
-	formData.append("existThumbNailFileName", existThumbNailFileName);
-	
-	// 	업로드파일 존재 여부 판단
-	try {
-		if (fileObj === undefined) {
-			// 존재하지 않으면 텍스트만 등록
-			console.log("업로드파일 존재하지 않음");
-			if (imageEditYn === true) {
-				console.log("이미지 파일 삭제 imageEditYn : " + imageEditYn);
-				deleteFile();
-			}
-		} else {
-			// 존재하면 파일체크
-			console.log("업로드파일 존재함 fileObj.name : " + fileObj.name);
-			// fileCheck 통과시 검사 통과 알림
-			if(!fileCheck(fileObj.name, fileObj.size)){
-				return false;
-			}
-			// 사용자가 선택한 파일을 FormData에 "UploadFile" 이름(key)으로 추가
-			for(let i = 0; i < fileList.length; i++){
-				formData.append("uploadFile", fileList[i]);
-			}
+
+	console.log("imageEditYn : " + imageEditYn);
+	console.log("uploadStart : " + uploadStart);
+	// uploadFile 가 있으면 이미지 추가
+	if( uploadStart === true ){
+		const fileInput = $('input[name="uploadFile"]');
+		console.log("fileInput : " + fileInput);
+		// FileList 객체 접근
+		let fileList = fileInput[0].files;
+		// FileList의 요소로 있는 File 객체에 접근
+		let fileObj = fileList[0];
+		// 존재하면 파일체크
+		console.log("업로드파일 존재함 fileObj.name : " + fileObj.name);
+		// fileCheck 통과시 검사 통과 알림
+		if(!fileCheck(fileObj.name, fileObj.size)){
+			console.log("파일체크(용량/확장자) 통과 실패");
+			return false;
 		}
-	} catch (error) {
-		console.log(error.message);
+		// 사용자가 선택한 파일을 FormData에 "UploadFile" 이름(key)으로 추가
+		for(let i = 0; i < fileList.length; i++){
+			// 업로드 파일 객체
+			formData.append("uploadFile", fileList[i]);
+			// 삭제할 기존 파일 이름
+			formData.append("existFileName", $("#originalFile").val());
+			formData.append("existThumbNailFileName", $("#thumbNail").val());
+			console.log("파일 삭제 데이터 추가");
+		}
+		console.log("uploadFile 확인됨");
+	} else {
+		// uploadFile 없음
+		console.log("uploadFile 없음");
+		// 삭제할 기존 파일 이름
+		formData.append("existFileName", $("#originalFile").val());
+		formData.append("existThumbNailFileName", $("#thumbNail").val());
 	}
-	
 	console.log("업로드 파일 존재 여부 판단 종료");
 	
 	$.ajax({
@@ -262,13 +271,13 @@ function frmSubmit() {
 		processData : false,
 		async:false,
 		success : function(data) {
-			var code = JSON.stringify(data.API_CODE['rtcode']).replace(/"/g, ''); // 따옴표 제거
-			if (code == '200') {
+			const code = JSON.stringify(data.API_CODE['rtcode']).replace(/"/g, ''); // 따옴표 제거
+			if (code === '200') {
 				alert('게시글 수정 성공');
 				location.href = "/member/detail?memberSeq=" + memberSeq;
-			} else if (code == '400') {
-				alert('올바른 이미지 파일이 아닙니다');
-				location.href = "${pageContext.request.contextPath}/member/list";
+			} else if (code === '500') {
+				alert('내부 서버 오류');
+				location.href = "/member/detail?memberSeq=" + memberSeq;
 			}
 		},
 		error : function(request, status, error) {
@@ -282,7 +291,7 @@ function frmSubmit() {
 	function errorSubmit() {
 		$.ajax({
 			type : 'POST',
-			url : '오류 로그 수집 서버',
+			url : '오류로그수집서버',
 			beforeSend : function(xhr) {
 				xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 				xhr.setRequestHeader("apikey", "errorerrorerror");
@@ -297,9 +306,10 @@ function frmSubmit() {
 			},
 			dataType : 'json',
 			success : function(data) {
-				var code = JSON.stringify(data.API_CODE['rtcode']).replace(/"/g, ''); // 따옴표 제거
-				if (code == '200') {
-					alert('저장중 오류가 발생했습니다');
+				const code = JSON.stringify(data.API_CODE['rtcode']).replace(/"/g, ''); // 따옴표 제거
+				if (code === '200') {
+					alert('저장중 오류 발생, 올바른 이미지 파일이 아닐 수 있습니다.');
+					location.href = "/member/detail?memberSeq=" + memberSeq;
 				}
 			},
 			error : function(xhr, status, error) {
@@ -348,7 +358,8 @@ function readURL(input) {
 	};
 	reader.readAsDataURL(input.files[0]);
 	} else {
-	  document.getElementById('preview').src = "";
+	  // document.getElementById('preview').src = "";
+	  console.log("preview 이미지 없음");
 	}
 }
 </script>

@@ -288,8 +288,6 @@ public class Image {
 //		else if (os.contains("linux")) {
 //			System.out.println("Linux");
 //		}
-//		String path = "C:\\upload\\";
-//		String path = "/users/upload/";
 
 		try {
 			// 썸네일 파일 삭제
@@ -368,11 +366,9 @@ public class Image {
 				final String checkline = input.nextLine();
 				if(checkline.contains("%PDF-")) {
 					log.info("=====> PDF 파일이 맞습니다");
-					input.close();
 					return true;
 				}
 			}
-			input.close();
 			log.error("=====> PDF 파일이 아닙니다");
 			return false;
 		}

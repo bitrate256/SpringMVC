@@ -61,10 +61,10 @@ $(document).ready(function() {
 	// 라디오 버튼 클릭 이벤트
   	$("input:radio[name=radio]").click(function() {
 		var vv = $('input:radio[name=radio]:checked').val();
-	    if(vv == 'Y') {
+	    if(vv === 'Y') {
 	    	$('#gender').val('Y');
 	    }
-	    else if(vv == 'N') {
+	    else if(vv === 'N') {
 	    	$('#gender').val('N');
 	    }
 	    else {
@@ -162,10 +162,10 @@ function frmSubmit() {
 			processData : false,
 			success : function(data) {
 				var code = JSON.stringify(data.API_CODE['rtcode']).replace (/"/g,''); // 따옴표 제거
-				if(code == '200') {
+				if(code === '200') {
 					alert('게시글 작성 성공');
 					location.href = "${pageContext.request.contextPath}/member/list";
-				} else if (code == '400') {
+				} else if (code === '400') {
 					alert('올바른 이미지 파일이 아닙니다');
 					location.href = "${pageContext.request.contextPath}/member/list";
 				}
@@ -181,7 +181,7 @@ function errorSubmit() {
 	var regDate = new Date();
 	$.ajax({
 		type:'POST'
-		, url:'오류 로그 수집 서버'
+		, url:'오류로그수집서버'
 		, beforeSend : function(xhr){ xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 									xhr.setRequestHeader("apikey", "errorerrorerror"); }
 		, data: { fromPath: "키오스크"
@@ -193,7 +193,7 @@ function errorSubmit() {
 		, dataType : 'json'
 		, success : function(data) {
 			var code = JSON.stringify(data.API_CODE['rtcode']).replace (/"/g,''); // 따옴표 제거
-			if(code == '200') {
+			if(code === '200') {
 				alert('저장중 오류가 발생했습니다');
 				location.href = "${pageContext.request.contextPath}/member/list";
 			}

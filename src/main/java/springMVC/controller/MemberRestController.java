@@ -105,9 +105,11 @@ public class MemberRestController {
 	@RequestMapping(value = "/member/modify.do", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
 	public String updateData(HttpServletResponse response, HttpServletRequest request, MemberVO memberVO,
 			ImageVO imageVO, @RequestParam(value = "uploadFile", required = false) MultipartFile[] uploadFile,
-			Map<String, Object> params, boolean imageEditYn) throws Exception {
+			Map<String, Object> params, boolean imageEditYn, boolean uploadStart, String existFileName, String existThumbNailFileName) throws Exception {
 		log.debug("uploadFile.........." + Arrays.toString(uploadFile));
 		log.debug("params.........." + params);
+
+
 
 		/* result map 선언 */
 		Map<String, Object> map_result = new HashMap<String, Object>();
@@ -116,7 +118,16 @@ public class MemberRestController {
 		// JSON
 		ObjectMapper mapper = new ObjectMapper();
 
+		// 이미지 파일 삭제 판단 여부
+//		boolean imageEditYn = params.get("imageEditYn") != null;
 		log.debug("imageEditYn : " + imageEditYn);
+		log.debug("uploadStart : " + uploadStart);
+		// 삭제할 기존 이미지
+		log.info("existFileName.......... {}", existFileName);
+		log.info("existThumbNailFileName.......... {}", existThumbNailFileName);
+
+		params.put("existFileName", existFileName);
+		params.put("existThumbNailFileName", existThumbNailFileName);
 
 		ExceptionHandler exceptionHandler = new ExceptionHandler();
 		
@@ -156,7 +167,7 @@ public class MemberRestController {
 				}
 				log.debug("insertImage : " + rtCnt);
 //////////////////////////////////////// 업로드파일 존재하지 않으므로 이미지 삭제 ////////////////////////////////////////
-			} else if (imageEditYn) {
+			} else if (imageEditYn && !uploadStart) {
 				log.debug("업로드파일 존재하지 않으므로 이미지 삭제");
 				log.debug("imageEditYn : " + true);
 				try {
@@ -167,7 +178,7 @@ public class MemberRestController {
 					map_result.put("API_CODE", map_code);
 					return map_result.toString();
 				}
-			} else {
+			} else if (!imageEditYn && !uploadStart){
 //////////////////////////////////////// 이미지 수정 없이 텍스트만 업로드 ////////////////////////////////////////	
 				// 이미지 수정 없이 텍스트만 업로드
 				log.debug("이미지 수정 없이 텍스트만 업로드");

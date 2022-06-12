@@ -52,7 +52,6 @@ $(document).ready(function() {
 	if (fileName.length === 0) {
 		let str = "";
 		uploadResult.html(str);
-		return;
 	} else {
 		// 이미지 조회 결과가 있으면?
 		let str = "";
@@ -90,7 +89,7 @@ $(document).on('click', '#btn_delete', function() {
 				dataType : 'json',
 				success : function(data) {
 					var code = JSON.stringify(data.API_CODE['rtcode']).replace (/"/g,''); // 따옴표 제거
-					if(code == '200') { alert('게시글 삭제 성공'); location.href = "${pageContext.request.contextPath}/member/list"; }
+					if(code === '200') { alert('게시글 삭제 성공'); location.href = "${pageContext.request.contextPath}/member/list"; }
 				}
 				, error : function(xhr, status, error) { errorSubmit(); }
 			});
@@ -102,7 +101,6 @@ function deleteFile() {
 		
 		let existFileName = $("#originalFile").val();
 		let existThumbNailFileName = $("#thumbNail").val();
-		let existUploadPath = $('#uploadPath').val();
 		let targetDiv = $("#result_card");
 		
 		console.log(existFileName);
@@ -131,7 +129,7 @@ function deleteFile() {
 function errorSubmit() {
 	$.ajax({
 		type:'POST'
-		, url:'오류 로그 수집 서버'
+		, url:'오류로그수집서버'
 			, beforeSend : function(xhr){ xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 				xhr.setRequestHeader("apikey", "errorerrorerror"); }
 			, data: { fromPath: "키오스크",

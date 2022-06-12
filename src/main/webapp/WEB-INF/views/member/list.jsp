@@ -25,10 +25,10 @@ function getParameterByName(name) {
 $(document).ready(function() { 
 	// 파라미터 존재 유무 판단하여 검색 조건 유지
 	var keyword = getParameterByName('keyword');
-	if(keyword!=null || keyword!='') { $("#cntSearch").val(keyword); }
-	if(keyword==null || keyword=='null') { $("#cntSearch").val(''); }
+	if(keyword!=null || keyword!=='') { $("#cntSearch").val(keyword); }
+	if(keyword==null || keyword==='null') { $("#cntSearch").val(''); }
 	var searchType = getParameterByName('searchType');
-	if(searchType=='n') { $("#selectSearch").val(searchType).prop("selected", true); }
+	if(searchType==='n') { $("#selectSearch").val(searchType).prop("selected", true); }
 });//ready
 
 $(document).on('click', '#btn_write', function() {
@@ -36,9 +36,9 @@ $(document).on('click', '#btn_write', function() {
 });
 $(document).on('click', '#btn_search', function() {
 	var st = $("#selectSearch").val();
-	if(st=='') { st=null; }
+	if(st==='') { st=null; }
 	var kw = $("#cntSearch").val();
-	if(kw=='') { kw=null; }
+	if(kw==='') { kw=null; }
 	location.href="/member/list"
 		//+"?searchType="+$("#selectSearch option:selected").val()
 		//+"&keyword="+$("#cntSearch").val()
@@ -47,9 +47,9 @@ $(document).on('click', '#btn_search', function() {
 });
 function chageSelectElement() {
 	var st = $("#selectSearch").val();
-	if(st=='') { st=null; }
+	if(st==='') { st=null; }
 	var kw = $("#cntSearch").val();
-	if(kw=='') { kw=null; }
+	if(kw==='') { kw=null; }
 	location.href="/board/list"
 		//+"?searchType="+$("#selectSearch option:selected").val()
 		//+"&keyword="+$("#cntSearch").val()
@@ -60,7 +60,7 @@ function errorSubmit() {
 	var regDate = new Date();
 	$.ajax({
 		type:'POST'
-		, url:'오류 로그 수집 서버'
+		, url:'오류로그수집서버'
 		, beforeSend : function(xhr){ xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 									xhr.setRequestHeader("apikey", "errorerrorerror"); }
 		, data: { fromPath: "키오스크"
@@ -72,7 +72,7 @@ function errorSubmit() {
 		, dataType : 'json'
 		, success : function(data) {
 			var code = JSON.stringify(data.API_CODE['rtcode']).replace (/"/g,''); // 따옴표 제거
-			if(code == '200') { alert('리스트 조회중 오류가 발생했습니다'); }
+			if(code === '200') { alert('리스트 조회중 오류가 발생했습니다'); }
 		}
 		, error : function(xhr, status, error) { }
 	});
