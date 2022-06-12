@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import springMVC.service.BoardService;
 import springMVC.utils.MapCodePut;
 import springMVC.utils.RegularExpression;
-import springMVC.vo.baseVO;
+import springMVC.vo.BaseVO;
 
 @RestController
 public class BoardRestController {
@@ -38,7 +38,7 @@ public class BoardRestController {
 	 * 게시글 등록
 	 */
 	@RequestMapping(value = "/board/register.do", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
-	public String regPost(HttpServletResponse response, HttpServletRequest request, baseVO adposVO)
+	public String regPost(HttpServletResponse response, HttpServletRequest request, BaseVO baseVO)
 			throws IOException, SQLException, ParseException {
 
 		/* result map 선언 */
@@ -54,14 +54,14 @@ public class BoardRestController {
 		// JSON
 		ObjectMapper mapper = new ObjectMapper();
 		//
-		adposVO.setRegisteredDate(today);
+		baseVO.setRegisteredDate(today);
 
 		/*
-		 * insert할 값 유효성 검사 예시 (필요 따라서 조정할 것) if (reg.isBlankSpecial(adposVO.getID()) ==
-		 * false || reg.isKorean(adposVO.getName()) == false ||
-		 * reg.isMob1(adposVO.getPhoneNum()) == false) {
-		 * log.error("저장할 값이 올바르지 않습니다 >>>> ID :" + adposVO.getID() + ", Name : " +
-		 * adposVO.getName() + ", phone : " + adposVO.getPhoneNum()); Map<String,
+		 * insert할 값 유효성 검사 예시 (필요 따라서 조정할 것) if (reg.isBlankSpecial(baseVO.getID()) ==
+		 * false || reg.isKorean(baseVO.getName()) == false ||
+		 * reg.isMob1(baseVO.getPhoneNum()) == false) {
+		 * log.error("저장할 값이 올바르지 않습니다 >>>> ID :" + baseVO.getID() + ", Name : " +
+		 * baseVO.getName() + ", phone : " + baseVO.getPhoneNum()); Map<String,
 		 * Object> map_code = mapCodePut.MapCode("400", "BAD REQUEST",
 		 * "잘못된 요청 / 데이터가 올바르지 않습니다"); map_result.put("API_CODE", map_code); return new
 		 * ResponseEntity<Map<String, Object>>(map_result, HttpStatus.BAD_REQUEST); }
@@ -69,7 +69,7 @@ public class BoardRestController {
 
 		int rtCnt = 0;
 		try {
-			rtCnt = BoardService.regPost(adposVO);
+			rtCnt = BoardService.regPost(baseVO);
 		} catch (Exception e) {
 			// 저장중 오류시 예외처리
 			log.error("DB 커넥션 오류 ==> " + e);
@@ -97,7 +97,7 @@ public class BoardRestController {
 	 * 게시글 수정
 	 */
 	@RequestMapping(value = "/board/modify.do", method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
-	public String updateData(HttpServletResponse response, HttpServletRequest request, baseVO adposVO)
+	public String updateData(HttpServletResponse response, HttpServletRequest request, BaseVO baseVO)
 			throws IOException, SQLException, ParseException {
 
 		/* result map 선언 */
@@ -113,11 +113,11 @@ public class BoardRestController {
 		// JSON
 		ObjectMapper mapper = new ObjectMapper();
 		//
-		adposVO.setChangedDate(today);
+		baseVO.setChangedDate(today);
 
 		int rtCnt = 0;
 		try {
-			rtCnt = BoardService.modifyPost(adposVO);
+			rtCnt = BoardService.modifyPost(baseVO);
 		} catch (Exception e) {
 			// 저장 중 오류시 예외처리
 			log.error("DB 커넥션 오류 ==> " + e);
@@ -157,13 +157,13 @@ public class BoardRestController {
 		// JSON
 		ObjectMapper mapper = new ObjectMapper();
 		//
-		baseVO adposVO = new baseVO();
+		BaseVO baseVO = new BaseVO();
 		//
-		adposVO.setBno(bno);
+		baseVO.setBno(bno);
 
 		int rtCnt = 0;
 		try {
-			rtCnt = BoardService.deletePost(adposVO);
+			rtCnt = BoardService.deletePost(baseVO);
 		} catch (Exception e) {
 			// 저장중 오류시 예외처리
 			log.error("DB 커넥션 오류 ==> " + e);

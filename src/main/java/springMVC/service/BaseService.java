@@ -1,9 +1,9 @@
 package springMVC.service;
 
-import springMVC.dao.baseDAO;
+import springMVC.dao.BaseDAO;
 import springMVC.utils.Criteria;
-import springMVC.vo.baseAPIKeyVO;
-import springMVC.vo.baseVO;
+import springMVC.vo.BaseVO;
+import springMVC.vo.BaseAPIKeyVO;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,16 +16,16 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class baseService {
+public class BaseService {
 	
 	private Logger log = LogManager.getLogger(getClass());
 
 	@Autowired
-	private baseDAO baseDAO;
+	private BaseDAO baseDAO;
 
 	// API 헤더에 담긴 인증키값 조회
 	public int checkBaseApi(String aPIKey) throws SQLException {
-		baseAPIKeyVO vo = new baseAPIKeyVO();
+		BaseAPIKeyVO vo = new BaseAPIKeyVO();
 		vo.setAPIKey(aPIKey);
 		return baseDAO.checkBaseApi(vo);
 	}
@@ -36,7 +36,7 @@ public class baseService {
 	public int insertData(String ID, String name, String grade, int gender, String titleKor, String titleEng,
 			String contentKor, String contentEng, String phoneNum, String birthDate, int juminNo, String registeredDate,
 			String changedDate) throws SQLException {
-		baseVO vo = new baseVO();
+		BaseVO vo = new BaseVO();
 		vo.setID(ID);
 		vo.setName(name);
 		vo.setGrade(grade);
@@ -56,7 +56,7 @@ public class baseService {
 	// SELECT
 	// 리스트 (String / ModelMap 공용)
 	public List<Map<String, Object>> selectDataListPage(String keyword, String startDate, String endDate, String searchType, Criteria criteria) throws SQLException {
-		baseVO vo = new baseVO();
+		BaseVO vo = new BaseVO();
 //		vo.setID(ID);
 //		vo.setTitleKor(titleKor);
 		vo.setKeyword(keyword);
@@ -82,7 +82,7 @@ public class baseService {
 
 	// 데이터 상세조회
 	public List<Map<String, Object>> selectDataDetail(int bno) throws SQLException {
-		baseVO vo = new baseVO();
+		BaseVO vo = new BaseVO();
 		vo.setBno(bno);
 		log.debug("서비스 setBno : " + bno);
 
@@ -94,7 +94,7 @@ public class baseService {
 	public int updateData(int bno, String iD, String name, String grade, int gender, String titleKor, String titleEng,
 			String contentKor, String contentEng, String phoneNum, String birthDate, int juminNo, String registeredDate,
 			String changedDate) throws SQLException {
-		baseVO vo = new baseVO();
+		BaseVO vo = new BaseVO();
 		vo.setBno(bno);
 		vo.setID(iD);
 		vo.setName(name);
@@ -114,7 +114,7 @@ public class baseService {
 	// DELETE
 	// 데이터 삭제
 	public int deleteData(int bno) throws SQLException {
-		baseVO vo = new baseVO();
+		BaseVO vo = new BaseVO();
 		vo.setBno(bno);
 		return baseDAO.deleteData(vo);
 	}

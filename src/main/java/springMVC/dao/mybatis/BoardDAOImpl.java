@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import springMVC.dao.BoardDAO;
 import springMVC.utils.Criteria;
-import springMVC.vo.baseVO;
+import springMVC.vo.BaseVO;
 
 @Repository
 public class BoardDAOImpl implements BoardDAO {
@@ -28,37 +28,31 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 
 	@Override
-	public int regPost(baseVO adposVO) throws SQLException {
-		int rtCnt = springMVCSession.insert("BoardMapper.insertDataMssql", adposVO);
-		return rtCnt;
+	public int regPost(BaseVO baseVO) throws SQLException {
+		return springMVCSession.insert("BoardMapper.insertDataMssql", baseVO);
 	}
 
 	@Override
-	public baseVO boardDetail(baseVO adposVO) throws SQLException {
-		baseVO DataResult = springMVCSession.selectOne("BoardMapper.selectDataDetailMssql", adposVO);
-		return DataResult;
+	public BaseVO boardDetail(BaseVO baseVO) throws SQLException {
+		return springMVCSession.selectOne("BoardMapper.selectDataDetailMssql", baseVO);
 	}
 
 	@Override
-	public int modifyPost(baseVO adposVO) throws SQLException {
-		int rtCnt = springMVCSession.update("BoardMapper.updateDataMssql", adposVO);
-		return rtCnt;
+	public int modifyPost(BaseVO baseVO) throws SQLException {
+		return springMVCSession.update("BoardMapper.updateDataMssql", baseVO);
 	}
 
 	@Override
-	public int deletePost(baseVO adposVO) throws SQLException {
-		int rtCnt = springMVCSession.delete("BoardMapper.deleteDataMssql", adposVO);
-		return rtCnt;
+	public int deletePost(BaseVO baseVO) throws SQLException {
+		return springMVCSession.delete("BoardMapper.deleteDataMssql", baseVO);
 	}
 
 	@Override
-	public List<Map<String, Object>> selectDataListPage(baseVO adposVO, Criteria cri) throws SQLException {
+	public List<Map<String, Object>> selectDataListPage(BaseVO baseVO, Criteria cri) throws SQLException {
 		Map<String, Object> paramMap = new HashMap<String, Object>();
-		paramMap.put("baseVO", adposVO);
+		paramMap.put("BoardVO", baseVO);
 		paramMap.put("Criteria", cri);
-		List<Map<String, Object>> DataListPageSearch = springMVCSession.selectList("BoardMapper.selectDataListPage",
-				paramMap);
-		return DataListPageSearch;
+		return springMVCSession.selectList("BoardMapper.selectDataListPage", paramMap);
 	}
 
 }

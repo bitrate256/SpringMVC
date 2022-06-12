@@ -1,6 +1,6 @@
 package springMVC.vo;
 
-public class baseVO {
+public class BaseVO {
 
     private int bno;
     private String ID;

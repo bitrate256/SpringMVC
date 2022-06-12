@@ -1,6 +1,6 @@
 package springMVC.vo;
 
-public class baseAPIKeyVO {
+public class BaseAPIKeyVO {
 
     // APIKey 전용 VO
     // 원래는 사용자별로 고유 APIKey가 있으므로 불필요 하지만, 개발 및 테스트를 위해 사용합니다.

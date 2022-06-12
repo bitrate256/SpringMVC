@@ -20,7 +20,7 @@ import springMVC.service.BoardService;
 import springMVC.utils.Criteria;
 import springMVC.utils.MapCodePut;
 import springMVC.utils.PageMaker;
-import springMVC.vo.baseVO;
+import springMVC.vo.BaseVO;
 
 @Controller
 public class BoardController {
@@ -31,22 +31,22 @@ public class BoardController {
 	private BoardService BoardService;
 
 	@RequestMapping(value = "/board/list", method = RequestMethod.GET)
-	public ModelAndView list(ModelMap modelMap, ModelAndView mav, Criteria cri, baseVO adposVO)
+	public ModelAndView list(ModelMap modelMap, ModelAndView mav, Criteria cri, BaseVO baseVO)
 			throws IOException, SQLException, ParseException, Exception {
 		//
 		modelMap = mav.getModelMap();
 		// MapCode 함수 호출
 		MapCodePut mapCodePut = new MapCodePut();
 
-		System.out.println(">>>>>>>>>>>> searchType : " + adposVO.getSearchType());
-		System.out.println(">>>>>>>>>>>>>>> keyword : " + adposVO.getKeyword());
-		System.out.println(">>>>>>>>>>>>> startDate : " + adposVO.getStartDate());
-		System.out.println(">>>>>>>>>>>>>>> endDate : " + adposVO.getEndDate());
+		System.out.println(">>>>>>>>>>>> searchType : " + baseVO.getSearchType());
+		System.out.println(">>>>>>>>>>>>>>> keyword : " + baseVO.getKeyword());
+		System.out.println(">>>>>>>>>>>>> startDate : " + baseVO.getStartDate());
+		System.out.println(">>>>>>>>>>>>>>> endDate : " + baseVO.getEndDate());
 
 		// 조회
 		final List<Map<String, Object>> DataListPageSearch;
 		try {
-			DataListPageSearch = BoardService.selectDataListPage(adposVO, cri);
+			DataListPageSearch = BoardService.selectDataListPage(baseVO, cri);
 		} catch (Exception e) {
 			// 조회중 오류시 예외처리
 			log.error("DB 커넥션 오류 ==> " + e);
@@ -79,14 +79,14 @@ public class BoardController {
 		// MapCode 함수 호출
 		MapCodePut mapCodePut = new MapCodePut();
 		//
-		baseVO adposVO = new baseVO();
-		baseVO DataResult = new baseVO();
+		BaseVO baseVO = new BaseVO();
+		BaseVO DataResult = new BaseVO();
 		//
-		adposVO.setBno(bno);
+		baseVO.setBno(bno);
 
 		// 조회
 		try {
-			DataResult = BoardService.boardDetail(adposVO);
+			DataResult = BoardService.boardDetail(baseVO);
 		} catch (Exception e) {
 			// 조회중 오류시 예외처리
 			log.error("DB 커넥션 오류 ==> " + e);
@@ -108,14 +108,14 @@ public class BoardController {
 		// MapCode 함수 호출
 		MapCodePut mapCodePut = new MapCodePut();
 		//
-		baseVO adposVO = new baseVO();
-		baseVO DataResult = new baseVO();
+		BaseVO baseVO = new BaseVO();
+		BaseVO DataResult = new BaseVO();
 		//
-		adposVO.setBno(bno);
+		baseVO.setBno(bno);
 
 		// 조회
 		try {
-			DataResult = BoardService.boardDetail(adposVO);
+			DataResult = BoardService.boardDetail(baseVO);
 		} catch (Exception e) {
 			// 조회중 오류시 예외처리
 			log.error("DB 커넥션 오류 ==> " + e);

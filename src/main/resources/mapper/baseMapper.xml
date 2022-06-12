@@ -7,7 +7,7 @@
 	<!-- ###################################### 인증 ###################################### -->
 	<!-- API 헤더에 담긴 인증키값 조회 -->
 	<select id="checkbaseApi" resultType="Integer"
-		parameterType="springMVC.vo.baseAPIKeyVO">
+		parameterType="springMVC.vo.BaseAPIKeyVO">
 		SELECT count(*)
 		FROM dbo.APIKey_T
 		WHERE APIKey = #{APIKey}
@@ -20,7 +20,7 @@
 	<!-- insert, 데이터 추가 -->
 	<!-- '신규등록' 버튼 -->
 	<insert id="insertData"
-		parameterType="springMVC.vo.baseVO">
+		parameterType="springMVC.vo.BaseVO">
 		INSERT INTO rest_common_module_data_t (bno, ID, name, grade, gender,
 		titleKor, titleEng, contentKor, contentEng, phoneNum, birthDate,
 		juminNo, registeredDate, changedDate)
@@ -32,7 +32,7 @@
 	</insert>
 	<!-- 동일 기능. 일련번호 증가하는 함수가 db별로 다를 수 있으며, 시퀀스 등 사용이 필요 -->
 	<insert id="insertDataMssql"
-		parameterType="springMVC.vo.baseVO">
+		parameterType="springMVC.vo.BaseVO">
 		INSERT INTO dbo.Data_T (bno, ID, name, grade, gender, titleKor, titleEng,
 		contentKor, contentEng, phoneNum, birthDate, juminNo, registeredDate,
 		changedDate)
@@ -48,7 +48,7 @@
 	<!-- ###################################### READ ###################################### -->
 	<!-- SELECT -->
 	<select id="selectDataListPage" resultType="java.util.HashMap"
-		parameterType="springMVC.vo.baseVO">
+		parameterType="springMVC.vo.BaseVO">
 		SELECT bno,
 		ID,
 		name,
@@ -135,7 +135,7 @@
 
 	<!-- 데이터 상세조회 -->
 	<select id="selectDataDetail" resultType="java.util.HashMap"
-		parameterType="springMVC.vo.baseVO">
+		parameterType="springMVC.vo.BaseVO">
 		SELECT *
 		FROM dbo.Data_T
 		WHERE bno = #{baseVO.bno}
@@ -147,7 +147,7 @@
 	<!-- ##################################### UPDATE ##################################### -->
 	<!-- 데이터 업데이트, 전체 컬럼 -->
 	<update id="updateData"
-		parameterType="springMVC.vo.baseVO">
+		parameterType="springMVC.vo.BaseVO">
 		UPDATE dbo.Data_T
 		SET ID = #{ID}, name = #{name}, grade = #{grade}, gender = #{gender},
 		titleEng = #{titleEng}, contentKor = #{contentKor}, contentEng =
@@ -162,7 +162,7 @@
 	<!-- ##################################### DELETE ##################################### -->
 	<!-- 데이터 삭제 -->
 	<delete id="deleteData"
-		parameterType="springMVC.vo.baseVO">
+		parameterType="springMVC.vo.BaseVO">
 		DELETE FROM dbo.Data_T
 		WHERE bno = #{bno}
 	</delete>

@@ -7,7 +7,7 @@
 	<!-- 검색 있는 게시글 목록 조회 -->
 	<select id="selectDataListPage"
 		resultType="java.util.HashMap"
-		parameterType="springMVC.vo.baseVO">
+		parameterType="springMVC.vo.BaseVO">
         SELECT bno,
         	   ID,
       		   name,
@@ -95,37 +95,37 @@
 <!-- 	<sql id="search">
       <choose>
          ########################################### keword 있음 ###########################################
-         <when test="baseVO.keyword != null">
+         <when test="BaseVO.keyword != null">
             <choose>
             searchType 있음
-            <when test="baseVO.searchType != null">
+            <when test="BaseVO.searchType != null">
                <choose>
                   서치타입 t
-                  <when test="baseVO.searchType == 't'.toString()">
-                     AND titleKor like CONCAT('%', #{baseVO.keyword}, '%')
+                  <when test="BaseVO.searchType == 't'.toString()">
+                     AND titleKor like CONCAT('%', #{BaseVO.keyword}, '%')
                   </when>
                   서치타입 i
-                  <when test="baseVO.searchType == 'i'.toString()">
-                     AND ID like CONCAT('%', #{baseVO.keyword}, '%')
+                  <when test="BaseVO.searchType == 'i'.toString()">
+                     AND ID like CONCAT('%', #{BaseVO.keyword}, '%')
                   </when>
                </choose>
             </when>
             searchType 없음
-            <when test="baseVO.searchType == null">
-               OR ID like CONCAT('%', #{baseVO.keyword}, '%')
-               OR titleKor like CONCAT('%', #{baseVO.keyword}, '%')
+            <when test="BaseVO.searchType == null">
+               OR ID like CONCAT('%', #{BaseVO.keyword}, '%')
+               OR titleKor like CONCAT('%', #{BaseVO.keyword}, '%')
             </when>
             </choose>
             날짜 있으면 날짜 조건 추가
-            <if test="baseVO.startDate != null and baseVO.endDate != null">
-              AND registeredDate BETWEEN CONVERT(DATE, #{baseVO.startDate}) AND CONVERT(DATE, #{baseVO.endDate})
+            <if test="BaseVO.startDate != null and BaseVO.endDate != null">
+              AND registeredDate BETWEEN CONVERT(DATE, #{BaseVO.startDate}) AND CONVERT(DATE, #{BaseVO.endDate})
             </if>
          </when>
          ########################################### keword 없음 ###########################################
-         <when test="baseVO.keyword == null">
+         <when test="BaseVO.keyword == null">
             날짜 있으면 날짜 조건 추가
-            <if test="baseVO.startDate != null and baseVO.endDate != null">
-               AND registeredDate BETWEEN CONVERT(DATE, #{baseVO.startDate}) AND CONVERT(DATE, #{baseVO.endDate})
+            <if test="BaseVO.startDate != null and BaseVO.endDate != null">
+               AND registeredDate BETWEEN CONVERT(DATE, #{BaseVO.startDate}) AND CONVERT(DATE, #{BaseVO.endDate})
             </if>
          </when>
       </choose>
@@ -133,7 +133,7 @@
 	
 	<!-- /게시글 목록 조회 -->
 
-	<insert id="insertDataMssql" parameterType="springMVC.vo.baseVO">
+	<insert id="insertDataMssql" parameterType="springMVC.vo.BaseVO">
 	<![CDATA[
         INSERT INTO dbo.Data_T (bno, ID, name, grade, gender, titleKor, titleEng, contentKor, contentEng, phoneNum, birthDate, juminNo, registeredDate)
         VALUES ((NEXT VALUE FOR dbo.bno),
@@ -141,8 +141,8 @@
         ]]>
 	</insert>
 	
-	<select id="selectDataDetailMssql" resultType="springMVC.vo.baseVO"
-		parameterType="springMVC.vo.baseVO">
+	<select id="selectDataDetailMssql" resultType="springMVC.vo.BaseVO"
+		parameterType="springMVC.vo.BaseVO">
 	<![CDATA[
 		SELECT *
 		  FROM dbo.Data_T
@@ -150,7 +150,7 @@
 	]]>
 	</select>
 	
-	<update id="updateDataMssql" parameterType="springMVC.vo.baseVO">
+	<update id="updateDataMssql" parameterType="springMVC.vo.BaseVO">
 	<![CDATA[
 		UPDATE dbo.Data_T
 		SET 
@@ -170,7 +170,7 @@
 	]]>
 	</update>
 	
-	<delete id="deleteDataMssql" parameterType="springMVC.vo.baseVO">
+	<delete id="deleteDataMssql" parameterType="springMVC.vo.BaseVO">
 	<![CDATA[
 		DELETE FROM dbo.Data_T
 		 WHERE bno = #{bno}
