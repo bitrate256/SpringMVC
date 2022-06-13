@@ -59,9 +59,9 @@ $(document).ready(function() {
 
 	$("input:radio[name=radio]").click(function() { // 라디오 버튼 클릭 이벤트
 		var vv = $('input:radio[name=radio]:checked').val();
-		if (vv == 'Y') {
+		if (vv === 'Y') {
 			$('#gender').val('Y');
-		} else if (vv == 'N') {
+		} else if (vv === 'N') {
 			$('#gender').val('N');
 		} else {
 			$('#gender').val('');
@@ -117,14 +117,8 @@ $(document).ready(function() {
 	
 	// 이미지 삭제 버튼
 	$("#uploadResult").on("click", ".imgDeleteBtn", function(e){
-		// $("#result_card").empty();
-		document.getElementById("preview").remove();
+		document.getElementById("preview").style.display = "none";
 		document.getElementById("result_card").remove();
-		// document.getElementById("preview").remove();
-		// let str = "";
-		// str += "<img id='preview' >";
-		// uploadResult.append(str);
-		// document.getElementById("preview").setAttribute("src", "");
 	    readURL(this);
 	});
 });
@@ -174,38 +168,48 @@ function frmSubmit() {
 	var imageEditYn = false;
 	var uploadStart = false;
 	// 게시글 수정시 이미지 수정/삭제/변동없음 판단
-	if (document.getElementById("result_card") === null && document.getElementById("exist_image") === null
-			&& document.getElementById("preview").getAttribute("src") === null ) {
-		console.log("result_card 없음 / exist_image 없음");
-		console.log("게시글에 이미지 없음 / 이미지 삭제 시도 하지 않고 글만 수정");
-		imageEditYn = false;
+	if (document.getElementById("result_card") !== null && document.getElementById("exist_image") !== null
+			&& document.getElementById("preview").getAttribute("src") !== null ) {
+		console.log("result_card 있음 / exist_image 있음 / preview 있음");
+		console.log("게시글에 이미지 있음 / 이미지만 수정");
+		imageEditYn = true;
+		uploadStart = true;
 		console.log("imageEditYn : " + imageEditYn);
+		console.log("uploadStart : " + uploadStart);
+	} else if (document.getElementById("result_card") === null && document.getElementById("exist_image") === null
+			&& document.getElementById("preview").getAttribute("src") === null ) {
+		console.log("result_card 없음 / exist_image 없음 / preview 없음");
+		console.log("게시글에 이미지 없음 / 이미지 삭제 시도 하지 않고 글만 수정");
+		console.log("imageEditYn : " + imageEditYn);
+		console.log("uploadStart : " + uploadStart);
+	} else if (document.getElementById("result_card") === null && document.getElementById("exist_image") !== null
+			&& document.getElementById("preview").getAttribute("src") === null ) {
+		console.log("result_card 없음 / exist_image 있음 / preview 없음");
+		console.log("현재 이미지 삭제");
+		imageEditYn = true;
+		console.log("imageEditYn : " + imageEditYn);
+		console.log("uploadStart : " + uploadStart);
 	} else if ( document.getElementById("result_card") === null && document.getElementById("exist_image") !== null
-			&& document.getElementById("preview") !== null ) {
+			&& document.getElementById("preview").getAttribute("src") !== null ) {
 		console.log("result_card 없음 / exist_image 있음 / preview 있음");
 		console.log("게시글에 이미지 있음 / 이미지 수정 업로드");
 		imageEditYn = true;
 		uploadStart = true;
 		console.log("imageEditYn : " + imageEditYn);
 	} else if (document.getElementById("result_card") === null && document.getElementById("exist_image") === null
-			&& document.getElementById("preview") !== null ) {
+			&& document.getElementById("preview").getAttribute("src") !== null ) {
 		console.log("result_card 없음 / exist_image 없음 / preview 있음");
 		console.log("게시글에 이미지 없음 / 이미지 신규 업로드");
 		imageEditYn = true;
 		uploadStart = true;
 		console.log("imageEditYn : " + imageEditYn);
-	}  else if (document.getElementById("result_card") === null && document.getElementById("exist_image") !== null
-			&& document.getElementById("preview") === null ) {
-		console.log("result_card 없음 / exist_image 있음 / preview 없음");
-		console.log("현재 이미지 삭제");
-		imageEditYn = true;
-		console.log("imageEditYn : " + imageEditYn);
+		console.log("uploadStart : " + uploadStart);
 	} else if (document.getElementById("result_card") !== null && document.getElementById("exist_image") !== null
-			&& document.getElementById("preview") === null ) {
-		console.log("result_card 있음 / exist_image 있음");
+			&& document.getElementById("preview").getAttribute("src") === null ) {
+		console.log("result_card 있음 / exist_image 있음 / preview 없음");
 		console.log("게시글에 이미지 있음 / 이미지 삭제하지 않고 글만 수정");
-		imageEditYn = false;
 		console.log("imageEditYn : " + imageEditYn);
+		console.log("uploadStart : " + uploadStart);
 	}
 	
 	const memberSeq = document.getElementById("memberSeq").value;
@@ -225,9 +229,6 @@ function frmSubmit() {
 	
 	formData.append("existUploadPath", existUploadPath);
 	formData.append("existUuid", existUuid);
-
-	console.log("imageEditYn : " + imageEditYn);
-	console.log("uploadStart : " + uploadStart);
 	// uploadFile 가 있으면 이미지 추가
 	if( uploadStart === true ){
 		const fileInput = $('input[name="uploadFile"]');
@@ -351,6 +352,7 @@ function deleteFile() {
  
 //업로드 대기 이미지 미리보기
 function readURL(input) {
+	document.getElementById("preview").style.display = "";
 	if (input.files && input.files[0]) {
 	var reader = new FileReader();
 	reader.onload = function(e) {
